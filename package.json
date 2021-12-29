@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "MUST CHANGE": "migrate and rollback scripts",
+    "migrate": "DATABASE_URL=postgres://vano:1234@localhost:5432/facebookdb node-pg-migrate up",
+    "rollback": "DATABASE_URL=postgres://vano:1234@localhost:5432/facebookdb node-pg-migrate down",
     "dev": "ts-node-dev -r dotenv/config ./src/index.ts"
   },
   "keywords": [],
