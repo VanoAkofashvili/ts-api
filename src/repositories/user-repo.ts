@@ -1,5 +1,5 @@
-import { Password } from "../password";
-import pool from "../pool";
+import { Password } from "../services/password";
+import { pool } from "../services";
 import { omit, toCamelCase } from "./utils";
 
 interface Filter {

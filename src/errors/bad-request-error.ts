@@ -1,5 +1,5 @@
 import { CustomError } from "./custom-error";
-
+// due to an issue that is perceived by the server to be a client problem.
 export class BadRequestError extends CustomError {
   statusCode = 400;
 
