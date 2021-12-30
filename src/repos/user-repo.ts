@@ -23,8 +23,6 @@ interface DBUser extends User {
   jwt?: string;
 }
 
-
-
 class User {
   static async findOne(filter: Filter) {
     const result = await pool.query('SELECT * FROM users WHERE email=$1 LIMIT 1;', [filter.email])
