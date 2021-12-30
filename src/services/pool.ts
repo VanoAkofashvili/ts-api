@@ -18,4 +18,4 @@ class Pool {
 
 }
 
-export default new Pool();
+export const pool = new Pool();

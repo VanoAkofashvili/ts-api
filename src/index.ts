@@ -1,5 +1,5 @@
 import { app } from './app';
-import pool from './pool';
+import { pool } from './services';
 
 const start = async () => {
   if (!process.env.DB_NAME) {
