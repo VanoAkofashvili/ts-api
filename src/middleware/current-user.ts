@@ -16,7 +16,7 @@ declare global {
 
 export const currentUser = (req: Request, res: Response, next: NextFunction) => {
   const jwtToken = req.headers['authorization'];
-
+  console.log(jwtToken);
   if (!jwtToken) {
     return next();
   }
@@ -28,6 +28,7 @@ export const currentUser = (req: Request, res: Response, next: NextFunction) => 
     ) as UserPayload
     req.currentUser = payload;
   } catch (err) {
+    console.log(err);
     console.error('currentUser error block');
   }
 

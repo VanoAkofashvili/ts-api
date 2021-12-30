@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use('/api/auth', usersRoute);
+app.use('/api/users', usersRoute);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();

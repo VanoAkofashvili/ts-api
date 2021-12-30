@@ -4,7 +4,7 @@ import { User } from "../repositories/user-repo";
 import { Password } from "../services";
 import jwt from "jsonwebtoken";
 
-class AuthController {
+class UsersController {
 
   async signin(req: Request, res: Response) {
 
@@ -58,9 +58,13 @@ class AuthController {
 
     res.status(201).send(user);
   }
+
+  currentUser(req: Request, res: Response) {
+    res.send({ currentUser: req.currentUser || null })
+  }
 }
 
-export const authController = new AuthController();
+export const usersController = new UsersController();
 
 
 
