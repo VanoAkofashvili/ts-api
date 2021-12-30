@@ -1,6 +1,6 @@
 import { Password } from "../services/password";
 import { pool } from "../services";
-import { omit, toCamelCase } from "./utils";
+import { omit, toCamelCase } from '../utils';
 
 interface Filter {
   email: string;
@@ -27,7 +27,7 @@ class User {
   static async findOne(filter: Filter) {
     const result = await pool.query('SELECT * FROM users WHERE email=$1 LIMIT 1;', [filter.email])
     if (result) {
-      return toCamelCase(result.rows)[0];
+      return toCamelCase(result.rows)[0] as DBUser;
     }
   };
 
