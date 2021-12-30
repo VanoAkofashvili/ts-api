@@ -25,14 +25,11 @@ router.post('/signup', [
   // Generate JWT
   const userJwt = jwt.sign(
     {
-      //@ts-ignore
       id: user.id,
-      // @ts-ignore
       email: user.email
     },
     process.env.JWT_KEY!
   )
-  //@ts-ignore
   user.jwt = userJwt;
 
   res.status(201).send(user);

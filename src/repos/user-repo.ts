@@ -23,8 +23,8 @@ interface DBUser extends User {
   jwt?: string;
 }
 
-function omit<T extends object, U extends Extract<keyof T, string>>(obj: T) {
-  return function (...keys: U[]): Omit<T, U> {
+function omit<T extends object>(obj: T) {
+  return function <K extends Extract<keyof T, string>>(...keys: K[]): Omit<T, K> {
     let ret: any = {};
     const excludeSet: Set<string> = new Set(keys);
     for (let key in obj) {
