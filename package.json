@@ -7,7 +7,7 @@
     "MUST CHANGE": "migrate and rollback scripts",
     "migrate": "DATABASE_URL=postgres://vano:1234@localhost:5432/facebookdb node-pg-migrate up",
     "rollback": "DATABASE_URL=postgres://vano:1234@localhost:5432/facebookdb node-pg-migrate down",
-    "dev": "NODE_ENV=development ts-node-dev -r dotenv/config ./src/index.ts"
+    "dev": "NODE_ENV=development ts-node-dev --rs -r dotenv/config ./src/index.ts"
   },
   "keywords": [],
   "author": "",

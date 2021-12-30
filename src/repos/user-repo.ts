@@ -1,6 +1,6 @@
 import { Password } from "../password";
 import pool from "../pool";
-import { toCamelCase } from "./utils/to-camel-case";
+import { omit, toCamelCase } from "./utils";
 
 interface Filter {
   email: string;
@@ -23,18 +23,7 @@ interface DBUser extends User {
   jwt?: string;
 }
 
-function omit<T extends object>(obj: T) {
-  return function <K extends Extract<keyof T, string>>(...keys: K[]): Omit<T, K> {
-    let ret: any = {};
-    const excludeSet: Set<string> = new Set(keys);
-    for (let key in obj) {
-      if (!excludeSet.has(key)) {
-        ret[key] = obj[key];
-      }
-    }
-    return ret;
-  }
-}
+
 
 class User {
   static async findOne(filter: Filter) {
@@ -52,6 +41,7 @@ class User {
       [email, username, firstname, hashedPassword]
     );
 
+    // Transform object keys from snake_case to camelCase and Remove password field from the object
     return omit(toCamelCase(res?.rows)[0] as DBUser)('password');
   }
 }
