@@ -14,7 +14,7 @@ POST http://localhost:4000/api/users/signin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "vanikoakofa@gmail.com",
+  "email": "test@gmail.com",
   "password": "vano1234"
 }
 
