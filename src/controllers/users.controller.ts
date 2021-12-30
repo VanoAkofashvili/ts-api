@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { BadRequestError, RequestValidationError } from "../errors";
-import { User } from "../repositories/user-repo";
+import { User } from "../repositories/users.repo";
 import { Password } from "../services";
 import jwt from "jsonwebtoken";
 
