@@ -2,6 +2,7 @@ import express from "express";
 import { body } from "express-validator";
 import { currentUser, validateRequest } from "../middleware";
 import { usersController } from "../controllers";
+import { requireAuth } from "../middleware/require-auth";
 
 const router = express.Router();
 
@@ -17,6 +18,6 @@ router.post('/signup', [
   body('username').notEmpty().trim()
 ], validateRequest, usersController.signup);
 
-router.get('/currentuser', currentUser, usersController.currentUser);
+router.get('/currentuser', usersController.currentUser);
 
 export default router;
