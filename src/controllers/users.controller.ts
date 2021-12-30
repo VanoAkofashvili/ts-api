@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { BadRequestError, RequestValidationError } from "../errors";
+import { BadRequestError } from "../errors";
 import { User } from "../repositories/users.repo";
 import { Password } from "../services";
+import { omit } from "../utils";
 import jwt from "jsonwebtoken";
 
 class UsersController {
@@ -32,7 +33,7 @@ class UsersController {
 
     existingUser.jwt = userJwt;
 
-    res.status(200).send(existingUser);
+    res.status(200).send(omit(existingUser)('password'));
   }
 
   async signup(req: Request, res: Response) {

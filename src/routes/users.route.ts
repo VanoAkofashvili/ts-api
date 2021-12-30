@@ -15,7 +15,7 @@ router.post('/signup', [
   body('password').notEmpty().trim(),
   body('firstname').notEmpty().trim(),
   body('username').notEmpty().trim()
-], usersController.signup);
+], validateRequest, usersController.signup);
 
 router.get('/currentuser', currentUser, usersController.currentUser);
 

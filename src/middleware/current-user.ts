@@ -16,7 +16,7 @@ declare global {
 
 export const currentUser = (req: Request, res: Response, next: NextFunction) => {
   const jwtToken = req.headers['authorization'];
-  console.log(jwtToken);
+
   if (!jwtToken) {
     return next();
   }
