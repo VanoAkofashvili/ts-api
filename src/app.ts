@@ -1,5 +1,6 @@
 import express from "express";
 import { json } from "body-parser";
+import "express-async-errors";
 import morgan from "morgan";
 import { errorHandler } from "./middleware";
 import { NotFoundError } from "./errors";

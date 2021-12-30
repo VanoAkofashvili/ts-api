@@ -1,0 +1,2 @@
+### Error handler test
+GET http://localhost:4000/asdf
