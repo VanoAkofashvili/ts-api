@@ -4,6 +4,7 @@ import { validateRequest } from "../middleware";
 import { usersController } from "../controllers";
 import { User } from "../repositories/users.repo";
 import { requireAuth } from "../middleware/require-auth";
+import { logInfo } from "../utils";
 
 const router = express.Router();
 
@@ -27,10 +28,9 @@ router.post('/addfriend', requireAuth, [
 
 router.post('/find', requireAuth, async (req, res, next) => {
 
-  // console.log(req);
-  console.log(req.body.email);
+  logInfo(req.body.email);
   const user = await User.findOne({ email: req.body.email });
-  console.log({ user });
+  logInfo(user);
   return res.send(user)
 })
 

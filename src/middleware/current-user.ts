@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from "jsonwebtoken";
+import { config, logError } from '../utils';
 
 interface UserPayload {
   id: number;
@@ -24,12 +25,11 @@ export const currentUser = (req: Request, res: Response, next: NextFunction) => 
   try {
     const payload = jwt.verify(
       jwtToken,
-      process.env.JWT_KEY!
+      config.JWT_KEY
     ) as UserPayload
     req.currentUser = payload;
   } catch (err) {
-    console.log(err);
-    console.error('currentUser error block');
+    logError('currentUser error block');
   }
 
   next();
