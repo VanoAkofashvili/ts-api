@@ -1,4 +1,4 @@
-export const toCamelCase = (rows: object[] | undefined) => {
+export const toCamelCase = <T>(rows: T[] | undefined): T[] => {
   if (!rows) { return [] };
   return rows.map((row) => {
     const replaced: any = {};
