@@ -36,7 +36,7 @@ class UsersController {
   }
 
   async signup(req: Request, res: Response) {
-    const { email, password, firstname, username } = req.body;
+    const { email, password, firstname } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -44,7 +44,7 @@ class UsersController {
       throw new BadRequestError('Email in use');
     }
 
-    const user = await User.create({ email, password, firstname, username });
+    const user = await User.create({ email, password, firstname });
 
     // Generate JWT
     const userJwt = jwt.sign(
