@@ -1,10 +1,7 @@
-import { Password } from "../services/password";
-import { pool } from "../services";
+import format from "pg-format";
+import { Password, pool } from "../services";
 import { omit, toCamelCase } from '../utils';
 
-interface Filter {
-  email: string;
-}
 
 interface User {
   email: string;
@@ -23,15 +20,54 @@ interface DBUser extends User {
   jwt?: string;
 }
 
-class User {
-  static async findOne(filter: Filter) {
-    const result = await pool.query('SELECT * FROM users WHERE email=$1 LIMIT 1;', [filter.email])
-    if (result) {
-      return toCamelCase(result.rows)[0] as DBUser;
-    }
-  };
+interface Filter {
+  [key: string]: string | number;
+}
 
-  static async create({ email, username, firstname, password }: User) {
+
+
+abstract class Repository<T> {
+  constructor(public tableName: string) { }
+
+  protected async _findOne(filter: Filter): Promise<T | null> {
+    console.log(filter);
+    let queryStr = `SELECT * FROM %I WHERE `;
+    const queryParams = [];
+
+    for (let key in filter) {
+      queryStr += '%I = %L AND ';
+      queryParams.push(key, filter[key]);
+    }
+    queryStr = queryStr.replace(/AND $/, '');
+    // Escape SQL identifiers and literals to avoid SQL Injection Exploit
+
+    let result;
+    try {
+      result = await pool.query(format(queryStr, this.tableName, ...queryParams));
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (result) {
+      const data = result.rows as T[];
+      const finalData: T = toCamelCase(data)[0]
+      return finalData;
+    }
+    return null;
+  }
+}
+
+class UserRepo extends Repository<DBUser> {
+
+  constructor() {
+    super('users');
+  }
+
+  public async findOne(filter: Filter) {
+    return await super._findOne(filter);
+  }
+
+  public async create({ email, username, firstname, password }: User) {
     const hashedPassword = await Password.toHash(password);
 
     const res = await pool.query(
@@ -44,4 +80,4 @@ class User {
   }
 }
 
-export { User };
+export const User = new UserRepo();

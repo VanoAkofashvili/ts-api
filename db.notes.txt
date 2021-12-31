@@ -1,0 +1,2 @@
+user has many posts
+post has one user
