@@ -5,7 +5,6 @@ import { Repository } from "./repo";
 
 interface User {
   email: string;
-  username: string;
   firstname: string;
   password: string;
 }
@@ -17,6 +16,7 @@ interface DBUser extends User {
   bio: string,
   createdAt: Date,
   updatetAt: Date,
+  username: string;
   jwt?: string;
 }
 
@@ -30,12 +30,12 @@ class UserRepo extends Repository<DBUser> {
     return await super._findOne(filter);
   }
 
-  public async create({ email, username, firstname, password }: User) {
+  public async create({ email, firstname, password }: User) {
     const hashedPassword = await Password.toHash(password);
 
     const res = await pool.query(
-      `INSERT INTO users (email, username, firstname, password) VALUES ($1, $2, $3, $4) RETURNING *`,
-      [email, username, firstname, hashedPassword]
+      `INSERT INTO users (email, firstname, password) VALUES ($1, $2, $3) RETURNING *`,
+      [email, firstname, hashedPassword]
     );
 
     // Transform object keys from snake_case to camelCase and Remove password field from the object

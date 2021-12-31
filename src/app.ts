@@ -4,7 +4,8 @@ import "express-async-errors";
 import morgan from "morgan";
 import { currentUser, errorHandler } from "./middleware";
 import { NotFoundError } from "./errors";
-import usersRoute from "./routes/users.route";
+import usersRouter from "./routes/users.route";
+import postsRouter from "./routes/posts.route";
 
 const app = express();
 app.use(json());
@@ -14,7 +15,8 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use('/api/users', usersRoute);
+app.use('/api/users', usersRouter);
+app.use('/api/posts', postsRouter);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
