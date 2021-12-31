@@ -1,10 +1,7 @@
-import { Password } from "../services/password";
-import { pool } from "../services";
+import { Password, pool } from "../services";
 import { omit, toCamelCase } from '../utils';
-
-interface Filter {
-  email: string;
-}
+import { Filter } from "./types";
+import { Repository } from "./repo";
 
 interface User {
   email: string;
@@ -23,15 +20,17 @@ interface DBUser extends User {
   jwt?: string;
 }
 
-class User {
-  static async findOne(filter: Filter) {
-    const result = await pool.query('SELECT * FROM users WHERE email=$1 LIMIT 1;', [filter.email])
-    if (result) {
-      return toCamelCase(result.rows)[0] as DBUser;
-    }
-  };
+class UserRepo extends Repository<DBUser> {
 
-  static async create({ email, username, firstname, password }: User) {
+  constructor() {
+    super('users');
+  }
+
+  public async findOne(filter: Filter) {
+    return await super._findOne(filter);
+  }
+
+  public async create({ email, username, firstname, password }: User) {
     const hashedPassword = await Password.toHash(password);
 
     const res = await pool.query(
@@ -44,4 +43,4 @@ class User {
   }
 }
 
-export { User };
+export const User = new UserRepo();

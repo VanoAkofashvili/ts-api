@@ -15,7 +15,6 @@ class UsersController {
     if (!existingUser) {
       throw new BadRequestError('Invalid Credentials');
     }
-
     const passwordMatch = await Password.compare(
       existingUser.password,
       password
