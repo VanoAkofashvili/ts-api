@@ -21,7 +21,7 @@ router.post('/signup', [
 
 router.get('/currentuser', usersController.currentUser);
 router.post('/find', async (req, res, next) => {
-  console.log(req);
+  // console.log(req);
   // console.log(email);
   const user = await User.findOne({ email: req.body.email });
   return res.send(user)

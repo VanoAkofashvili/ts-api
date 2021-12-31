@@ -1,7 +1,7 @@
-import format from "pg-format";
 import { Password, pool } from "../services";
 import { omit, toCamelCase } from '../utils';
-
+import { Filter } from "./types";
+import { Repository } from "./repo";
 
 interface User {
   email: string;
@@ -18,43 +18,6 @@ interface DBUser extends User {
   createdAt: Date,
   updatetAt: Date,
   jwt?: string;
-}
-
-interface Filter {
-  [key: string]: string | number;
-}
-
-
-
-abstract class Repository<T> {
-  constructor(public tableName: string) { }
-
-  protected async _findOne(filter: Filter): Promise<T | null> {
-    console.log(filter);
-    let queryStr = `SELECT * FROM %I WHERE `;
-    const queryParams = [];
-
-    for (let key in filter) {
-      queryStr += '%I = %L AND ';
-      queryParams.push(key, filter[key]);
-    }
-    queryStr = queryStr.replace(/AND $/, '');
-    // Escape SQL identifiers and literals to avoid SQL Injection Exploit
-
-    let result;
-    try {
-      result = await pool.query(format(queryStr, this.tableName, ...queryParams));
-    } catch (err) {
-      console.log(err);
-    }
-
-    if (result) {
-      const data = result.rows as T[];
-      const finalData: T = toCamelCase(data)[0]
-      return finalData;
-    }
-    return null;
-  }
 }
 
 class UserRepo extends Repository<DBUser> {
