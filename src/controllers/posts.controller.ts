@@ -5,7 +5,7 @@ class PostsController {
   async create(req: Request, res: Response, next: NextFunction) {
     const { caption } = req.body;
 
-    const newPost = await Post.create({ caption, userId: 1 });
+    const newPost = await Post.create({ caption, userId: req.currentUser!.id });
 
     res.status(201).send(newPost);
 
