@@ -4,7 +4,8 @@ import { pool } from '../services';
 import { toCamelCase } from "../utils";
 
 export abstract class Repository<T> {
-  constructor(public tableName: string) { }
+  constructor(protected tableName: string) { }
+
 
   protected async _findOne(filter: Filter): Promise<T | null> {
     let queryStr = `SELECT * FROM %I WHERE `;
@@ -27,4 +28,6 @@ export abstract class Repository<T> {
     }
     return null;
   }
+
+
 }
