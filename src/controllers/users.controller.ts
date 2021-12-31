@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { BadRequestError } from "../errors";
 import { User } from "../repositories/users.repo";
 import { Password } from "../services";
-import { omit, transformSuccess } from "../utils";
+import { config, omit, transformSuccess } from "../utils";
 import jwt from "jsonwebtoken";
 
 class UsersController {
@@ -28,7 +28,7 @@ class UsersController {
     const userJwt = jwt.sign({
       id: existingUser.id,
       email: existingUser.email
-    }, process.env.JWT_KEY!)
+    }, config.JWT_KEY)
 
     existingUser.jwt = userJwt;
 
@@ -52,7 +52,7 @@ class UsersController {
         id: user.id,
         email: user.email
       },
-      process.env.JWT_KEY!
+      config.JWT_KEY
     )
     user.jwt = userJwt;
 
