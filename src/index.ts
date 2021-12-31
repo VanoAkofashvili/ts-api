@@ -1,4 +1,5 @@
 import { app } from './app';
+import { DatabaseConnectionError } from './errors/database-connection-error';
 import { pool } from './services';
 
 const start = async () => {
