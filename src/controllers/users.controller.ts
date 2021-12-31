@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { BadRequestError } from "../errors";
 import { User } from "../repositories/users.repo";
 import { Password } from "../services";
-import { omit } from "../utils";
+import { omit, transformSuccess } from "../utils";
 import jwt from "jsonwebtoken";
 
 class UsersController {
@@ -32,7 +32,7 @@ class UsersController {
 
     existingUser.jwt = userJwt;
 
-    res.status(200).send(omit(existingUser)('password'));
+    res.status(200).send(transformSuccess(omit(existingUser)('password')));
   }
 
   async signup(req: Request, res: Response) {
@@ -56,11 +56,21 @@ class UsersController {
     )
     user.jwt = userJwt;
 
-    res.status(201).send(user);
+    res.status(201).send(transformSuccess(user));
   }
 
   currentUser(req: Request, res: Response) {
-    res.send({ currentUser: req.currentUser || null })
+    res.send(transformSuccess(req.currentUser));
+  }
+
+  async addFriend(req: Request, res: Response) {
+    const friendId = Number(req.body.friendId);
+    const result = await User.addFriend(req.currentUser!.id, friendId);
+
+    if (result)
+      return res.status(201).send(transformSuccess());
+    else
+      throw new BadRequestError("Friend can't be added");
   }
 }
 

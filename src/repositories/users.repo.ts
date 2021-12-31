@@ -41,6 +41,19 @@ class UserRepo extends Repository<DBUser> {
     // Transform object keys from snake_case to camelCase and Remove password field from the object
     return omit(toCamelCase(res?.rows)[0] as DBUser)('password');
   }
+
+  public async addFriend(userId: number, friendId: number): Promise<boolean> {
+    try {
+      const result = await pool.query(`
+        INSERT INTO friends (user_id, friend_id)
+        VALUES ($1, $2)
+      `, [userId, friendId]);
+      return true;
+    } catch (err) {
+      return false;
+    }
+
+  }
 }
 
 export const User = new UserRepo();

@@ -1,2 +1,4 @@
 user has many posts
 post has one user
+
+user has many friends
