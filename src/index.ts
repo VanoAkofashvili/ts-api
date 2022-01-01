@@ -1,5 +1,5 @@
 import { config } from "./utils";
-import { app } from './app';
+import app from "./app";
 import { pool } from './services';
 import { logError, logInfo } from './utils';
 
@@ -17,7 +17,7 @@ const start = async () => {
   }
 
 
-  app.listen(config.PORT, () => {
+  app().listen(config.PORT, () => {
     logInfo('Listening on port ' + config.PORT);
   });
 };

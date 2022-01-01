@@ -7,21 +7,24 @@ import { NotFoundError } from "./errors";
 import usersRouter from "./routes/users.route";
 import postsRouter from "./routes/posts.route";
 
-const app = express();
-app.use(json());
-app.use(currentUser);
+export default function () {
+  const app = express();
+  app.use(json());
+  app.use(currentUser);
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+  if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+  }
+
+  app.use('/api/users', usersRouter);
+  app.use('/api/posts', postsRouter);
+
+  app.all('*', async (req, res) => {
+    throw new NotFoundError();
+  })
+
+  app.use(errorHandler);
+
+  return app;
 }
 
-app.use('/api/users', usersRouter);
-app.use('/api/posts', postsRouter);
-
-app.all('*', async (req, res) => {
-  throw new NotFoundError();
-})
-
-app.use(errorHandler);
-
-export { app };
