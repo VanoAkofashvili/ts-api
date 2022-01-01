@@ -16,7 +16,6 @@ const start = async () => {
     logError(err);
   }
 
-
   app().listen(config.PORT, () => {
     logInfo('Listening on port ' + config.PORT);
   });
