@@ -4,6 +4,15 @@ import { Context } from "../../test/context";
 
 const api = request(app());
 
+let context: Context;
+beforeAll(async () => {
+  context = await Context.build();
+})
+
+afterAll(async () => {
+  return context.close();
+})
+
 
 describe('users route', () => {
 
@@ -85,6 +94,10 @@ describe('users route', () => {
 
   describe('signin', () => {
 
+    beforeEach(async () => {
+      await context.reset();
+    })
+
     const endpoint = '/api/users/signin';
 
     it('has a route handler listening to /api/users/signin for post requests', async () => {
@@ -123,7 +136,7 @@ describe('users route', () => {
       await api
         .post('/api/users/signup')
         .send({
-          email: 'ddd@gmail.com',
+          email: 'vanikoakofa@gmail.com',
           firstname: 'vano',
           password: 'vano1234'
         })
@@ -132,7 +145,7 @@ describe('users route', () => {
       const response = await api
         .post(endpoint)
         .send({
-          email: 'ddd@gmail.com',
+          email: 'vanikoakofa@gmail.com',
           password: 'vano1234'
         })
         .expect(200)
