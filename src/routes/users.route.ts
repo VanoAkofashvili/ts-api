@@ -14,9 +14,22 @@ router.post('/signin', [
 ], validateRequest, usersController.signin);
 
 router.post('/signup', [
-  body('email').isEmail().withMessage('Email must be valid'),
-  body('password').notEmpty().trim(),
-  body('firstname').notEmpty().trim(),
+  body('email')
+    .exists()
+    .notEmpty()
+    .withMessage('Email is required')
+    .isEmail()
+    .withMessage('Email is invalid'),
+  body('password')
+    .trim()
+    .notEmpty()
+    .withMessage('Password is required')
+    .isLength({ min: 4 })
+    .withMessage('Invalid password, minimum length: 4'),
+  body('firstname')
+    .trim()
+    .exists()
+    .notEmpty()
 ], validateRequest, usersController.signup);
 
 router.get('/currentuser', usersController.currentUser);
