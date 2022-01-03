@@ -28,7 +28,8 @@ describe('users route', () => {
       return api.post(endpoint).send({
         email: 'test@gmail.com',
         firstname: 'vano',
-        password: 'vano1234'
+        password: 'vano1234',
+        confirmPassword: 'vano1234'
       }).expect(201);
     })
 
@@ -44,10 +45,28 @@ describe('users route', () => {
       return api.post(endpoint).send({
         email: 'vano@gmail.com',
         password: '',
+        confirmPassword: '12345',
         firstname: 'vano'
       })
     })
 
+    it('returns a 400 when invalid confirmPassword is supplied', async () => {
+      await api.post(endpoint).send({
+        email: 'vano@gmail.com',
+        password: 'vano1234',
+        confirmPassword: '',
+        firstname: 'vano'
+      }).expect(400)
+    })
+
+    it('returns a 400 if confirmPassword is not equal to password', async () => {
+      await api.post(endpoint).send({
+        email: 'vano@gmail.com',
+        password: 'vano',
+        confirmPassword: 'vano123',
+        firstname: 'vano'
+      }).expect(400);
+    })
 
     it('forbids duplicate emails', async () => {
       await api
@@ -55,6 +74,7 @@ describe('users route', () => {
         .send({
           email: 'test1@test.com',
           password: 'password',
+          confirmPassword: 'password',
           firstname: 'vano'
         })
         .expect(201);
@@ -64,6 +84,7 @@ describe('users route', () => {
         .send({
           email: 'test1@test.com',
           password: 'password',
+          confirmPassword: 'password',
           firstname: 'vano'
         })
         .expect(400);
@@ -119,7 +140,8 @@ describe('users route', () => {
         .send({
           email: 'vanikoakofa@gmail.com',
           firstname: 'vano',
-          password: 'vano1234'
+          password: 'vano1234',
+          confirmPassword: 'vano1234',
         })
         .expect(201)
 
@@ -138,7 +160,8 @@ describe('users route', () => {
         .send({
           email: 'vanikoakofa@gmail.com',
           firstname: 'vano',
-          password: 'vano1234'
+          password: 'vano1234',
+          confirmPassword: 'vano1234',
         })
         .expect(201)
 
@@ -154,7 +177,7 @@ describe('users route', () => {
     })
   })
 
-  describe.only('add friend', () => {
+  describe('add friend', () => {
     const endpoint = '/api/users/addfriend';
     it('has a route handler listening to /api/users/addfriend for post requiest', async () => {
       const response = await api.post(endpoint).send({});
@@ -187,6 +210,35 @@ describe('users route', () => {
           friendId: -100
         })
         .expect(400)
+    })
+
+    it('add adds a friend on valid input', async () => {
+      const user1 = await api
+        .post('/api/users/signup')
+        .send({
+          email: 'test@test.com',
+          firstname: 'ttest',
+          password: 'vano',
+          confirmPassword: 'vano'
+        })
+        .expect(201);
+      const user2 = await api
+        .post('/api/users/signup')
+        .send({
+          email: 'test2@test.com',
+          firstname: 'ttest',
+          password: 'vano',
+          confirmPassword: 'vano'
+        })
+        .expect(201);
+
+      await api
+        .post(endpoint)
+        .set({ Authorization: user1.body.data.jwt })
+        .send({
+          friendId: user2.body.data.id
+        })
+        .expect(201)
     })
   })
 

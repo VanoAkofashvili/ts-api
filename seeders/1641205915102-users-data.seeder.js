@@ -10,7 +10,7 @@ function up() {
       (3, 'test2@gmail.com', '2 user', 'lastname', '3dc78ed9fe9d8918a9c9893e1e9c6033981aa2e9c219337d727b8cacefc2c22d82c14863378bfc6fd4cb8e909eaa14ac540b22db32c1658adcc894ba794edb16.2faa281eb4575360', 'test2','this is my bio')
   `;
 
-  for (let i = 4; i < 1000; i++) {
+  for (let i = 4; i < 100; i++) {
     const { id, email, firstname, lastname, password, username, bio } = {
       id: i,
       email: faker.internet.email(),
