@@ -7,7 +7,7 @@ const start = async () => {
   try {
     await pool.connect({
       host: 'localhost',
-      port: 5432,
+      port: config.DB_PORT,
       database: config.DB_NAME,
       user: config.DB_USER,
       password: config.DB_PASSWORD,
