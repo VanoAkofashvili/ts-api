@@ -6,7 +6,7 @@ import { requireAuth } from "../middleware/require-auth";
 const router = express.Router();
 
 router.post('/', requireAuth, [
-  body('caption').not().isEmpty().withMessage('Caption must be provided')
+  body('caption').not().isEmpty().withMessage('Title is required')
 ], validateRequest, postsController.create);
 
 export default router;
