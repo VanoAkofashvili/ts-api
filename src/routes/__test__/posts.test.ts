@@ -43,7 +43,6 @@ describe('posts route', () => {
           caption: 'post'
         })
 
-      console.log(response);
 
       expect(response.status).not.toEqual(401);
     })
@@ -78,7 +77,6 @@ describe('posts route', () => {
           userId: user.userId
         })
         .expect(201)
-      console.log(res.body);
 
       posts = await Post.find({});
 

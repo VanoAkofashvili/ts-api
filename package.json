@@ -4,10 +4,13 @@
   "description": "Facebook API",
   "main": "index.js",
   "scripts": {
-    "create-migration": "node-pg-migrate create",
     "MUST CHANGE": "migrate and rollback scripts",
+    "create-seeder": "node ./seeders/create-seeder.js",
+    "create-migration": "node-pg-migrate create",
     "migrate": "DATABASE_URL=postgres://vano:1234@localhost:5432/facebookdb node-pg-migrate up",
     "rollback": "DATABASE_URL=postgres://vano:1234@localhost:5432/facebookdb node-pg-migrate down",
+    "seed": "node ./seeders/run-seeders.js up",
+    "seed:undo": "node ./seeders/run-seeders.js down",
     "dev": "cross-env NODE_ENV=development ts-node-dev --rs --clear ./src/index.ts",
     "test": "cross-env NODE_ENV=test jest --verbose --no-cache"
   },
