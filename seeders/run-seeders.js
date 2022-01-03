@@ -10,16 +10,21 @@ if (!(command === 'up' || command === 'down')) {
 async function seed() {
   const pool = new pg.Pool({
     host: 'localhost',
-    port: 5432,
+    port: 5433,
     database: 'facebookdb',
-    user: 'vano',
+    user: 'postgres',
     password: '1234',
   });
 
   for (const file of files) {
     const content = require('./' + file);
-    await pool.query(content[command]());
+    try {
+      await pool.query(content[command]());
+    } catch (err) {
+      console.log(err);
+    }
   }
+  console.log('Completed');
   await pool.end();
 }
 
