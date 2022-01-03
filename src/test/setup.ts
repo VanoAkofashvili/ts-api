@@ -2,7 +2,7 @@
 
 // beforeAll(async () => {
 //   // Build test database and run all the migrations
-//   await Context.build();
+//   await context.build();
 // })
 
 // afterAll(async () => {

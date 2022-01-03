@@ -37,7 +37,6 @@ class UsersController {
 
   async signup(req: Request, res: Response) {
     const { email, password, firstname } = req.body;
-
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -64,7 +63,7 @@ class UsersController {
   }
 
   async addFriend(req: Request, res: Response) {
-    const friendId = Number(req.body.friendId);
+    const friendId = req.body.friendId;
     const result = await User.addFriend(req.currentUser!.id, friendId);
 
     if (result)

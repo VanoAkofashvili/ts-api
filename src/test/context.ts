@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 
 const DEFAULT_OPTS_TEST = {
   host: 'localhost',
-  port: 5432,
+  port: config.DB_PORT,
   database: config.DB_NAME_TEST,
   user: config.DB_USER,
   password: config.DB_PASSWORD
@@ -48,7 +48,7 @@ export class Context {
       migrationsTable: 'pgmigrations',
       databaseUrl: {
         host: 'localhost',
-        port: 5432,
+        port: config.DB_PORT,
         database: config.DB_NAME_TEST,
         user: roleName,
         password: roleName,
@@ -57,7 +57,7 @@ export class Context {
     // Connect to PG as the newly created role
     await pool.connect({
       host: 'localhost',
-      port: 5432,
+      port: config.DB_PORT,
       database: config.DB_NAME_TEST,
       user: roleName,
       password: roleName,

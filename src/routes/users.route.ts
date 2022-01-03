@@ -5,6 +5,7 @@ import { usersController } from "../controllers";
 import { User } from "../repositories/users.repo";
 import { requireAuth } from "../middleware/require-auth";
 import { logInfo } from "../utils";
+import { BadRequestError } from "../errors";
 
 const router = express.Router();
 
@@ -26,6 +27,13 @@ router.post('/signup', [
     .withMessage('Password is required')
     .isLength({ min: 4 })
     .withMessage('Invalid password, minimum length: 4'),
+  body('confirmPassword').custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new BadRequestError('Password confirmation does not match password')
+    }
+
+    return true;
+  }),
   body('firstname')
     .trim()
     .exists()
@@ -35,8 +43,8 @@ router.post('/signup', [
 router.get('/currentuser', usersController.currentUser);
 
 router.post('/addfriend', requireAuth, [
-  body('friendId').not().isEmpty().withMessage('FriendId is required')
-], usersController.addFriend);
+  body('friendId').not().isEmpty().withMessage('FriendId is required').isInt({ min: 0 }).withMessage('Invalid value')
+], validateRequest, usersController.addFriend);
 
 router.post('/find', requireAuth, async (req, res, next) => {
 

@@ -1,7 +1,8 @@
 import { Password, pool } from "../services";
-import { omit, toCamelCase } from '../utils';
+import { logError, logInfo, omit, toCamelCase } from '../utils';
 import { Filter } from "./types";
 import { Repository } from "./repo";
+import { BadRequestError } from "../errors";
 
 interface User {
   email: string;
@@ -44,12 +45,13 @@ class UserRepo extends Repository<DBUser> {
 
   public async addFriend(userId: number, friendId: number): Promise<boolean> {
     try {
-      const result = await pool.query(`
+      await pool.query(`
         INSERT INTO friends (user_id, friend_id)
         VALUES ($1, $2)
       `, [userId, friendId]);
       return true;
     } catch (err) {
+      logError(err);
       return false;
     }
 
