@@ -39,5 +39,5 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ2YW5pa29ha29mYUBnbWFpbC5jb20iLCJpYXQiOjE2NDA5NzU4OTN9.W_JZMzkXn3OkWcG1moHoDCfOCvi6MuboKwMNiVVVnAI
 
 {
-  "friendId": 4
+  "friendId": -1
 }

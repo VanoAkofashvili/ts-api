@@ -1,5 +1,5 @@
 import { Password, pool } from "../services";
-import { omit, toCamelCase } from '../utils';
+import { logError, logInfo, omit, toCamelCase } from '../utils';
 import { Filter } from "./types";
 import { Repository } from "./repo";
 
@@ -50,6 +50,7 @@ class UserRepo extends Repository<DBUser> {
       `, [userId, friendId]);
       return true;
     } catch (err) {
+      logError(err);
       return false;
     }
 

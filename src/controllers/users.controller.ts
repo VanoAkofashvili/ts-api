@@ -64,7 +64,7 @@ class UsersController {
   }
 
   async addFriend(req: Request, res: Response) {
-    const friendId = Number(req.body.friendId);
+    const friendId = req.body.friendId;
     const result = await User.addFriend(req.currentUser!.id, friendId);
 
     if (result)

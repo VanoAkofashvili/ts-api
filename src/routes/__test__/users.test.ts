@@ -154,4 +154,41 @@ describe('users route', () => {
     })
   })
 
+  describe.only('add friend', () => {
+    const endpoint = '/api/users/addfriend';
+    it('has a route handler listening to /api/users/addfriend for post requiest', async () => {
+      const response = await api.post(endpoint).send({});
+      expect(response.status).not.toEqual(404);
+    })
+
+    it('returns a 401 on unauthorized request', async () => {
+
+      await api
+        .post(endpoint)
+        .send({
+          friendId: 1
+        })
+        .expect(401)
+    })
+
+    it('returns  a 400 when invalid friendId is supplied', async () => {
+      await api
+        .post(endpoint)
+        .set(context.signin().header)
+        .send({
+          friendId: 'vaniko'
+        })
+        .expect(400)
+
+      await api
+        .post(endpoint)
+        .set(context.signin().header)
+        .send({
+          friendId: -100
+        })
+        .expect(400)
+    })
+  })
+
+
 })
