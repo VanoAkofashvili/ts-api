@@ -25,6 +25,7 @@ const DB_NAME_TEST = process.env.DB_NAME_TEST;
 const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const JWT_KEY = process.env.JWT_KEY;
+const __prod__ = process.env.NODE_ENV === 'production';
 
 export const config = {
   PORT,
@@ -32,5 +33,6 @@ export const config = {
   DB_NAME_TEST,
   DB_USER,
   DB_PASSWORD,
-  JWT_KEY
+  JWT_KEY,
+  __prod__
 }

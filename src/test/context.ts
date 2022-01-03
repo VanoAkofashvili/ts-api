@@ -3,6 +3,7 @@ import { pool } from "../services";
 import migrate from "node-pg-migrate";
 import { randomBytes } from "crypto";
 import format from "pg-format";
+import jwt from 'jsonwebtoken';
 
 const DEFAULT_OPTS_TEST = {
   host: 'localhost',
@@ -17,8 +18,6 @@ export class Context {
   constructor(roleName: string) {
     this.roleName = roleName;
   }
-
-
 
   static async build() {
     // Randomly generating a role name to connect to PG as
@@ -88,6 +87,18 @@ export class Context {
       DELETE FROM posts;
       DELETE FROM friends;
     `);
+  }
+
+  signin() {
+    // Build JWT
+    const payload = {
+      id: 1,
+      email: 'test@test.com'
+    }
+
+    const token = jwt.sign(payload, config.JWT_KEY);
+
+    return { header: { Authorization: token }, userId: 1 };
   }
 
 }

@@ -27,7 +27,7 @@ class UserRepo extends Repository<DBUser> {
   }
 
   public async findOne(filter: Filter) {
-    return await super._findOne(filter);
+    return await super.findOne(filter);
   }
 
   public async create({ email, firstname, password }: User) {
