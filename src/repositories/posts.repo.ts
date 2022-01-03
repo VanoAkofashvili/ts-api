@@ -1,6 +1,7 @@
 import { pool } from "../services";
 import { toCamelCase } from "../utils";
 import { Repository } from "./repo";
+import { Filter } from "./types";
 
 interface Post {
   caption: string;
@@ -34,14 +35,18 @@ class PostRepo extends Repository<DBPost> {
       return toCamelCase(result.rows as DBPost[])
     }
   }
-
-  public async latestPosts(userId: number) {
+  // UNDER DEVELOPMENT
+  private async latestPosts(userId: number) {
     const result = await pool.query(`
       SELECT * 
       FROM posts
       JOIN users ON users.id = posts.user_id
       ORDER_BY posts.created_at;
     `)
+  }
+
+  public async find(filter: Filter) {
+    return await super.find(filter);
   }
 }
 

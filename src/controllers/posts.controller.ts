@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Post } from "../repositories/posts.repo";
+import { transformSuccess } from "../utils";
 
 class PostsController {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -7,7 +8,7 @@ class PostsController {
 
     const newPost = await Post.create({ caption, userId: req.currentUser!.id });
 
-    res.status(201).send(newPost);
+    res.status(201).send(transformSuccess(newPost));
 
   }
 }

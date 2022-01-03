@@ -1,7 +1,7 @@
 ### CREATE POST
 POST http://localhost:4000/api/posts HTTP/1.1
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ2YW5pa29ha29mYUBnbWFpbC5jb20iLCJpYXQiOjE2NDA5NTI4Njd9.cwY_OjRwtqRucWcUgU1W13KKLYTHTQ60Xp_9z0mZt8Y
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ2YW5pa29AZ21haWwuY29tIiwiaWF0IjoxNjQxMTk5OTMxfQ.A2ujH-v1rjhhxTIFkMGJDgQb6-OMmpW-nip1KyQkAtE
 
 {
   "caption": "this is my first post"
