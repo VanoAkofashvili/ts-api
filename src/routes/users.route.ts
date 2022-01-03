@@ -35,9 +35,8 @@ router.post('/signup', [
 router.get('/currentuser', usersController.currentUser);
 
 router.post('/addfriend', requireAuth, [
-  body('friendId').not().isEmpty().withMessage('You must supply friend id')
+  body('friendId').not().isEmpty().withMessage('FriendId is required')
 ], usersController.addFriend);
-
 
 router.post('/find', requireAuth, async (req, res, next) => {
 
