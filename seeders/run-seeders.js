@@ -13,7 +13,7 @@ async function seed() {
     port: 5433,
     database: 'facebookdb',
     user: 'postgres',
-    password: '1234',
+    password: 'password',
   });
 
   for (const file of files) {
