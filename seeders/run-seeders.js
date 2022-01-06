@@ -1,3 +1,4 @@
+require('dotenv').config();
 const command = process.argv.slice(2)[0];
 const fs = require('fs');
 let dirCont = fs.readdirSync('./seeders');
@@ -10,10 +11,10 @@ if (!(command === 'up' || command === 'down')) {
 async function seed() {
   const pool = new pg.Pool({
     host: 'localhost',
-    port: 5433,
-    database: 'facebookdb',
-    user: 'postgres',
-    password: 'password',
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
   });
 
   for (const file of files) {
