@@ -4,11 +4,10 @@
   "description": "Facebook API",
   "main": "index.js",
   "scripts": {
-    "MUST CHANGE": "migrate and rollback scripts",
     "create-seeder": "node ./seeders/create-seeder.js",
     "create-migration": "node-pg-migrate create",
-    "migrate": "cross-env DATABASE_URL=postgres://postgres:password@localhost:5433/facebookdb node-pg-migrate up",
-    "rollback": "cross-env DATABASE_URL=postgres://postgres:password@localhost:5433/facebookdb node-pg-migrate down",
+    "migrate": "dotenv node-pg-migrate up",
+    "rollback": "dotenv node-pg-migrate down",
     "seed": "node ./seeders/run-seeders.js up",
     "seed:undo": "node ./seeders/run-seeders.js down",
     "dev": "cross-env NODE_ENV=development ts-node-dev --rs --clear ./src/index.ts",
@@ -37,6 +36,7 @@
   "dependencies": {
     "concurrently": "^7.0.0",
     "dotenv": "^10.0.0",
+    "dotenv-cli": "^4.1.1",
     "express": "^4.17.2",
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.14.0",
