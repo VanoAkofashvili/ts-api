@@ -2,7 +2,6 @@ import { Password, pool } from "../services";
 import { logError, logInfo, omit, toCamelCase } from '../utils';
 import { Filter } from "./types";
 import { Repository } from "./repo";
-import { BadRequestError } from "../errors";
 
 interface User {
   email: string;
@@ -19,6 +18,12 @@ interface DBUser extends User {
   updatetAt: Date,
   username: string;
   jwt?: string;
+}
+
+interface Friend {
+  userId: number;
+  friendId: number;
+  confirmed?: 'yes' | 'no';
 }
 
 class UserRepo extends Repository<DBUser> {
@@ -55,6 +60,43 @@ class UserRepo extends Repository<DBUser> {
       return false;
     }
 
+  }
+
+  public async isFriend({ userId, friendId }: Friend): Promise<boolean> {
+    const result = await pool.query(`
+      SELECT *
+      FROM friends
+      WHERE user_id = $1 AND friend_id = $2;
+    `, [userId, friendId])
+
+    if (result?.rows.length) return true;
+    return false;
+  }
+
+  public async hasRequestedFriendship({ userId, friendId }: Friend) {
+    const result = await pool.query(`
+      SELECT * 
+      FROM friends
+      WHERE friend_id = $1 AND user_id = $2 AND confirmed = false
+    `, [userId, friendId])
+    console.log(result?.rows)
+    if (result?.rows.length) return true;
+    return false;
+  }
+
+  public async removeFriendOrRequest({ userId, friendId }: Friend) {
+    await pool.query(`
+        DELETE FROM friends
+        WHERE user_id = $1 AND friend_id = $2;
+      `, [userId, friendId]);
+  }
+
+  public async acceptFriendRequest({ userId, friendId }: Friend) {
+    await pool.query(`
+      UPDATE friends
+      SET confirmed = 'yes'
+      WHERE friend_id = $1 AND user_id = $2 AND confirmed = 'no';
+    `, [userId, friendId]);
   }
 }
 
