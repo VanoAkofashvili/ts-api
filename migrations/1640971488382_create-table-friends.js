@@ -9,6 +9,7 @@ exports.up = pgm => {
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       friend_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      confirmed BOOLEAN NOT NULL DEFAULT 'no',
       UNIQUE(user_id, friend_id),
       CHECK(user_id <> friend_id)
     );

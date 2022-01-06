@@ -71,6 +71,29 @@ class UsersController {
     else
       throw new BadRequestError("Friend can't be added");
   }
+
+  async removeFriendOrRequest(req: Request, res: Response) {
+    const friendId = Number(req.body.friendId);
+    const userId = req.currentUser!.id;
+
+    const isFriends = await User.isFriend({ userId, friendId });
+    if (!isFriends) throw new BadRequestError('Something went wrong');
+
+    await User.removeFriendOrRequest({ userId, friendId })
+    return res.send(transformSuccess());
+  }
+
+  async acceptFriendRequest(req: Request, res: Response) {
+    const userId = req.currentUser!.id;
+    const friendId = req.body.friendId;
+    console.log(userId);
+    if (await User.hasRequestedFriendship({ userId, friendId })) {
+      await User.acceptFriendRequest({ userId, friendId });
+      return res.send(transformSuccess());
+    }
+    throw new BadRequestError("Can't add user");
+
+  }
 }
 
 export const usersController = new UsersController();
