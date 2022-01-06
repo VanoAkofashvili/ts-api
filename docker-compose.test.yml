@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres
     ports:
-      - "5433:5432"
+      - "5431:5432"
     environment:
       POSTGRES_DB: facebookdb-test
       POSTGRES_PASSWORD: password

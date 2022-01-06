@@ -10,9 +10,20 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  return context.close();
+  return await context.close();
 })
 
+async function createUser() {
+  const user1 = await api
+    .post('/api/users/signup')
+    .send({
+      email: `rand-${Math.random()}@test.com`,
+      firstname: 'ttest',
+      password: 'vano',
+      confirmPassword: 'vano'
+    })
+  return user1;
+}
 
 describe('users route', () => {
 
@@ -179,10 +190,11 @@ describe('users route', () => {
 
   describe('add friend', () => {
     const endpoint = '/api/users/addfriend';
-    it('has a route handler listening to /api/users/addfriend for post requiest', async () => {
+    it('has a route handler listening to /api/users/addfriend for post request', async () => {
       const response = await api.post(endpoint).send({});
       expect(response.status).not.toEqual(404);
     })
+
 
     it('returns a 401 on unauthorized request', async () => {
 
@@ -239,6 +251,61 @@ describe('users route', () => {
           friendId: user2.body.data.id
         })
         .expect(201)
+    })
+  })
+
+
+  describe('remove friend', () => {
+    const endpoint = '/api/users/removefriend';
+    it('has a route handler listening to /api/users/removefriend for post request', async () => {
+      const response = await api.post(endpoint).send({})
+      expect(response.status).not.toEqual(404);
+    })
+
+    it('is only accessible for authenticated users', async () => {
+      await api
+        .post(endpoint)
+        .send({
+          friendId: 1
+        })
+        .expect(401)
+    })
+
+    it('returns 400 when friendId is invalid', async () => {
+      const response = await api.post(endpoint)
+        .set(context.signin().header)
+        .send({
+          friendId: -1
+        })
+        .expect(400);
+      console.log(response.body);
+
+      await api.post(endpoint)
+        .set(context.signin().header)
+        .send({
+          friendId: 'friendId'
+        })
+        .expect(400);
+    })
+
+    it('removes friend from friendList on valid inputs', async () => {
+      const user1 = await createUser();
+      const user2 = await createUser();
+
+      await api
+        .post('/api/users/addfriend')
+        .set({ Authorization: user1.body.data.jwt }) // logged in user (user1)
+        .send({
+          friendId: user2.body.data.id // (user1 is adding user2)
+        })
+        .expect(201)
+
+
+      await api.post(endpoint)
+        .set({ Authorization: user1.body.data.jwt })
+        .send({
+          friendId: user2.body.data.id
+        }).expect(200);
     })
   })
 

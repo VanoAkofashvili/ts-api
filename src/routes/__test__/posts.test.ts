@@ -12,7 +12,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  return context.close();
+  return await context.close();
 })
 
 
